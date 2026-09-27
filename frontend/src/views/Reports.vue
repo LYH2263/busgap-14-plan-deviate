@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { api } from '../api'
+import { fmtDev, devClass } from '../util/deviation'
 const trips = ref<any[]>([])
 const events = ref<any[]>([])
 const loading = ref(false)
@@ -48,6 +49,14 @@ function label(s: string) {
           <div class="bg-gap-val">{{ e.gap_min }}′</div>
           <div>计划 {{ e.planned_headway_min }}′</div>
           <div>{{ e.earlier_trip }} → {{ e.later_trip }}</div>
+          <div class="bg-gap-dev">
+            <span>前班 {{ e.earlier_trip }}</span>
+            <span class="badge" :class="devClass(e.earlier_deviation_min)">{{ fmtDev(e.earlier_deviation_min) }}</span>
+          </div>
+          <div class="bg-gap-dev">
+            <span>后班 {{ e.later_trip }}</span>
+            <span class="badge" :class="devClass(e.later_deviation_min)">{{ fmtDev(e.later_deviation_min) }}</span>
+          </div>
           <span class="badge" :class="e.status === 'bunching' ? 'badge-bad' : e.status === 'large_gap' ? 'badge-warn' : 'badge-ok'">
             {{ label(e.status) }}
           </span>

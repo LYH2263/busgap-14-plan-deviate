@@ -30,6 +30,7 @@ class Arrival(Base):
     stop_name: Mapped[str] = mapped_column(String(64))
     stop_seq: Mapped[int] = mapped_column(Integer)
     actual_arrive: Mapped[datetime] = mapped_column(DateTime)
+    scheduled_arrive: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     trip: Mapped["Trip"] = relationship(back_populates="arrivals")
 
 class BunchReport(Base):

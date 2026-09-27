@@ -3,6 +3,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
 from app.database import get_db
 from app.models.models import Arrival
+from app.services.bunch_engine import deviation_min
 router = APIRouter(prefix="/arrivals", tags=["arrivals"])
 
 @router.get("")
@@ -12,5 +13,8 @@ def list_arrivals(line_id: int | None = None, db: Session = Depends(get_db)):
     for r in rows:
         if line_id is not None and r.trip.line_id != line_id: continue
         out.append({"id": r.id, "trip_id": r.trip_id, "trip_no": r.trip.trip_no, "line_id": r.trip.line_id,
-                    "stop_name": r.stop_name, "stop_seq": r.stop_seq, "actual_arrive": r.actual_arrive.isoformat()})
+                    "stop_name": r.stop_name, "stop_seq": r.stop_seq,
+                    "actual_arrive": r.actual_arrive.isoformat(),
+                    "scheduled_arrive": r.scheduled_arrive.isoformat() if r.scheduled_arrive else None,
+                    "deviation_min": deviation_min(r.actual_arrive, r.scheduled_arrive)})
     return out

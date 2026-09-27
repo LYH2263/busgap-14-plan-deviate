@@ -163,6 +163,13 @@ th { color: var(--bg-dim); font-weight: 600; font-size: 0.78rem; }
 .badge-ok { background: rgba(61,214,140,0.18); color: var(--bg-ok); }
 .badge-warn { background: rgba(255,176,32,0.18); color: var(--bg-amber); }
 .badge-bad { background: rgba(255,77,109,0.18); color: var(--bg-red); }
+.dev-early { background: rgba(46,196,255,0.18); color: var(--bg-cyan); }
+.dev-late { background: rgba(255,176,32,0.18); color: var(--bg-amber); }
+.badge-none { background: rgba(148,163,184,0.15); color: var(--bg-dim); }
+.bg-gap-dev {
+  display: flex; align-items: center; justify-content: space-between; gap: 0.4rem;
+}
+.bg-gap-dev .badge { white-space: nowrap; }
 .btn {
   background: var(--bg-cyan); color: #041018; border: none;
   padding: 0.45rem 0.95rem; font-weight: 700; cursor: pointer; font-size: 0.85rem;
@@ -180,4 +187,9 @@ th { color: var(--bg-dim); font-weight: 600; font-size: 0.78rem; }
 .tl-mark {
   position: absolute; top: 8px; width: 10px; height: 32px;
   border-radius: 2px; transform: translateX(-50%);
+}
+.tl-sched {
+  position: absolute; top: 4px; width: 2px; height: 40px;
+  background: repeating-linear-gradient(to bottom, var(--bg-dim) 0 3px, transparent 3px 6px);
+  transform: translateX(-50%);
 }
