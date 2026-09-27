@@ -20,10 +20,18 @@ function stripClass(s: string) {
 function label(s: string) {
   return s === 'bunching' ? '串车' : s === 'large_gap' ? '大间隔' : '正常'
 }
+function fmtDev(v: number | null | undefined) {
+  if (v === null || v === undefined) return '—'
+  return (v > 0 ? '+' : '') + v + '′'
+}
+function devClass(v: number | null | undefined) {
+  if (v === null || v === undefined || v === 0) return 'dev-zero'
+  return v > 0 ? 'dev-late' : 'dev-early'
+}
 </script>
 <template>
   <h1>串车报告</h1>
-  <p class="sub">按实际到站间隔对照计划发车间隔 · 竖直条带展示</p>
+  <p class="sub">按实际到站间隔对照计划发车间隔 · 偏离为相对计划到点（早到为负、晚到为正）</p>
   <button class="btn" :disabled="loading" @click="run">重新检测</button>
   <div class="bg-split" style="margin-top:1rem">
     <aside class="bg-trip-col">
@@ -48,6 +56,10 @@ function label(s: string) {
           <div class="bg-gap-val">{{ e.gap_min }}′</div>
           <div>计划 {{ e.planned_headway_min }}′</div>
           <div>{{ e.earlier_trip }} → {{ e.later_trip }}</div>
+          <div class="bg-gap-dev">
+            <span>前班 {{ e.earlier_trip }} <b :class="devClass(e.earlier_dev_min)">{{ fmtDev(e.earlier_dev_min) }}</b></span>
+            <span>后班 {{ e.later_trip }} <b :class="devClass(e.later_dev_min)">{{ fmtDev(e.later_dev_min) }}</b></span>
+          </div>
           <span class="badge" :class="e.status === 'bunching' ? 'badge-bad' : e.status === 'large_gap' ? 'badge-warn' : 'badge-ok'">
             {{ label(e.status) }}
           </span>

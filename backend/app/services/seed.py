@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 from app.models.models import Arrival, Line, Trip
+from app.services.schedule import STOP_TRAVEL_MIN
 
 def seed_if_empty(db: Session) -> None:
     if (db.scalar(select(func.count()).select_from(Line)) or 0) > 0:
@@ -15,10 +16,10 @@ def seed_if_empty(db: Session) -> None:
         trip = Trip(line_id=line.id, trip_no=trip_no, planned_depart=base + timedelta(minutes=offset), vehicle_no=vehicle)
         db.add(trip); db.flush()
         for seq, stop in enumerate(stops):
-            arrive = base + timedelta(minutes=offset + seq * 6)
+            arrive = base + timedelta(minutes=offset + seq * STOP_TRAVEL_MIN)
             if stop == "市民中心" and trip_no == "T02":
-                arrive = base + timedelta(minutes=8)
+                arrive = base + timedelta(minutes=7)   # 早到 1 分（计划 07:08）
             if stop == "火车站" and trip_no == "T03":
-                arrive = base + timedelta(minutes=30)
+                arrive = base + timedelta(minutes=32)  # 晚到 2 分（计划 07:30）
             db.add(Arrival(trip_id=trip.id, stop_name=stop, stop_seq=seq, actual_arrive=arrive))
     db.commit()

@@ -145,6 +145,14 @@ h1 { margin: 0 0 0.25rem; font-size: 1.25rem; font-weight: 700; }
 .bg-gap-strip .bg-gap-val {
   font-size: 1.8rem; font-weight: 800; color: var(--bg-text); line-height: 1.1;
 }
+.bg-gap-dev {
+  display: flex; flex-direction: column; gap: 0.15rem;
+  border-top: 1px dashed var(--bg-edge); padding-top: 0.35rem;
+}
+.bg-gap-dev b { font-weight: 700; }
+.dev-late { color: var(--bg-red); }
+.dev-early { color: var(--bg-cyan); }
+.dev-zero { color: var(--bg-dim); }
 
 .card {
   background: var(--bg-panel);
